@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'date'
 require_relative '../../../domain/value_object/cache_timestamp'
 require_relative '../../protocols/cache/cache_policy'
 
@@ -10,19 +9,17 @@ module UseCases
       CACHE_KEY = 'purchases'
 
       def initialize(cache_store:, current_date: Date.today)
-        @current_date = current_date
         @cache_store = cache_store
+        @current_date = current_date
       end
 
       def load_all
-        begin
-          return unless cache_present?
-          return unless cache_valid?
+        return unless cache_present?
+        return unless cache_valid?
 
-          [cache_object, cached_value]
-        rescue StandardError => e
-          puts e
-        end
+        [cache_object, cached_value]
+      rescue StandardError => e
+        puts e
       end
 
       private

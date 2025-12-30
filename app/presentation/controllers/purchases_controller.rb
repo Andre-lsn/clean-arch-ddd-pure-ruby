@@ -1,25 +1,24 @@
+# frozen_string_literal: true
+
 require_relative '../../main/factories/usecases/local_load_purchases_factory'
+require_relative '../presenters/collection_presenter'
+require_relative '../presenters/cache_timestamp_presenter'
+
+require 'sinatra/base'
+require 'json'
 
 module Controllers
-  class PurchasesController
-    def show
+  class PurchasesController < Sinatra::Base
+    get '/purchases' do
       usecase = Factories::UseCases::LocalLoadPurchasesFactory.build
       result = usecase.load_all
 
-      {
-        data: result,
-        status: 200
-      }
-    end
+      presenter = Presenters::CollectionPresenter.new(
+        collection: result,
+        presenter: Presenters::CacheTimestampPresenter
+      )
 
-    private
-
-    def cache_store
-      @cache_store ||= Cache::CacheStore
+      { data: presenter.as_json }.to_json
     end
   end
 end
-
-result = Controllers::PurchasesController.new.show
-
-pp result

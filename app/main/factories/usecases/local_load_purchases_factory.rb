@@ -9,7 +9,7 @@ module Factories
       def self.build
         cache_store = Cache::CacheStore
         ::UseCases::LoadPurchases::LocalLoadPurchases.new(
-          cache_store:,
+          cache_store: cache_store,
           current_date: Date.today
         )
       end

@@ -2,11 +2,11 @@
 
 module Cache
   class CacheStore
-    class << self 
-      def fetch(key) 
-        if key == 'purchases'
-          Date.today
-        end
+    class << self
+      def fetch(key)
+        return unless key == 'purchases'
+
+        Date.today
       end
     end
   end
